@@ -99,7 +99,7 @@ Array(300).fill().forEach(addStar);
 
 // Scroll Function
 
-function moveCamera() {
+function moveCameraUp() {
   const t = document.body.getBoundingClientRect().top;
   earthMesh.rotation.x += 0.05;
   earthMesh.rotation.y += 0.075;
@@ -108,13 +108,41 @@ function moveCamera() {
   uzairMesh.rotation.x += 0.01;
   uzairMesh.rotation.z += 0.01;
 
-  camera.position.z += t * -0.001;
-  camera.position.x += t * -0.0002;
-  camera.position.y += t * -0.0002;
+  camera.position.z += t * -0.00001;
+  camera.position.x += t * -0.00001;
+  camera.position.y += t * -0.00001;
 }
 
-document.body.onscroll = moveCamera;
-moveCamera();
+function moveCameraDown() {
+  const t = document.body.getBoundingClientRect().bottom;
+  earthMesh.rotation.x += 0.05;
+  earthMesh.rotation.y += 0.075;
+  earthMesh.rotation.z += 0.05;
+
+  uzairMesh.rotation.x += 0.01;
+  uzairMesh.rotation.z += 0.01;
+
+  camera.position.z += t * 0.00001;
+  camera.position.x += t * 0.00001;
+  camera.position.y += t * 0.00001;
+}
+
+// document.body.onscroll = moveCamera;
+// moveCamera();
+
+let oldValue = 0;
+let newValue = 0;
+window.addEventListener("scroll", (e) => {
+  newValue = window.pageYOffset;
+  if (oldValue < newValue) {
+    document.body.onscroll = moveCameraUp;
+    moveCameraUp();
+  } else if (oldValue > newValue) {
+    document.body.onscroll = moveCameraDown;
+    moveCameraDown();
+  }
+  oldValue = newValue;
+});
 // Animate Function
 
 function animate() {
