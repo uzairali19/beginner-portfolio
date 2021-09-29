@@ -2,6 +2,10 @@ import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Mesh } from "three";
+import nightUrl from "./night.jpeg";
+import earthUrl from "./earth.jpeg";
+import earthNormalUrl from "./earthnormal.png";
+import uzairUrl from "./uzair.jpeg";
 
 // Scene
 const scene = new THREE.Scene();
@@ -16,7 +20,7 @@ const camera = new THREE.PerspectiveCamera(
 
 // Background Image
 
-const backgroudTexture = new THREE.TextureLoader().load("./night.jpeg");
+const backgroudTexture = new THREE.TextureLoader().load(nightUrl);
 scene.background = backgroudTexture;
 
 // Objects
@@ -32,7 +36,7 @@ scene.add(torus);
 
 // Image Box
 
-const uzairTexture = new THREE.TextureLoader().load("./uzair.jpeg");
+const uzairTexture = new THREE.TextureLoader().load(uzairUrl);
 
 const uzairMesh = new Mesh(
   new THREE.BoxGeometry(3, 3, 3),
@@ -43,16 +47,15 @@ scene.add(uzairMesh);
 
 // Earth Sphere
 
-const earthTexture = new THREE.TextureLoader().load("./earth.jpeg");
-const normalTexture = new THREE.TextureLoader().load("./earthnormal.png");
+const earthTexture = new THREE.TextureLoader().load(earthUrl);
+const normalTexture = new THREE.TextureLoader().load(earthNormalUrl);
 
 const earthMesh = new Mesh(
   new THREE.SphereGeometry(3, 32, 32),
   new THREE.MeshBasicMaterial({ map: earthTexture, normalMap: normalTexture })
 );
 
-earthMesh.position.z = 30;
-earthMesh.position.x = -10;
+earthMesh.position.set(12, 12, 30);
 
 scene.add(earthMesh);
 
@@ -101,9 +104,9 @@ Array(300).fill().forEach(addStar);
 
 function moveCameraUp() {
   const t = document.body.getBoundingClientRect().top;
-  earthMesh.rotation.x += 0.05;
-  earthMesh.rotation.y += 0.075;
-  earthMesh.rotation.z += 0.05;
+  earthMesh.rotation.x += 0.005;
+  earthMesh.rotation.y += 0.0075;
+  earthMesh.rotation.z += 0.005;
 
   uzairMesh.rotation.x += 0.01;
   uzairMesh.rotation.z += 0.01;
@@ -111,13 +114,14 @@ function moveCameraUp() {
   camera.position.z += t * -0.00001;
   camera.position.x += t * -0.00001;
   camera.position.y += t * -0.00001;
+  console.log([camera.position.x, camera.position.y, camera.position.z]);
 }
 
 function moveCameraDown() {
   const t = document.body.getBoundingClientRect().bottom;
-  earthMesh.rotation.x += 0.05;
-  earthMesh.rotation.y += 0.075;
-  earthMesh.rotation.z += 0.05;
+  earthMesh.rotation.x += 0.005;
+  earthMesh.rotation.y += 0.0075;
+  earthMesh.rotation.z += 0.005;
 
   uzairMesh.rotation.x += 0.01;
   uzairMesh.rotation.z += 0.01;
@@ -132,7 +136,7 @@ function moveCameraDown() {
 
 let oldValue = 0;
 let newValue = 0;
-window.addEventListener("scroll", (e) => {
+window.addEventListener("wheel", (e) => {
   newValue = window.pageYOffset;
   if (oldValue < newValue) {
     document.body.onscroll = moveCameraUp;
