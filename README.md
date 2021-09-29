@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Three.js Starter Project
+# Three.js Beginner Portfolio
 
 > This is a initial starter project for me to learn threejs and the utility that it offers. The ultimate goal is to build a completely immersive website with threejs.
 
