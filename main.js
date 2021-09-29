@@ -1,6 +1,7 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Mesh } from "three";
 
 // Scene
 const scene = new THREE.Scene();
@@ -13,11 +14,13 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-camera.position.setZ(100);
-
 // Background Image
 
+const backgroudTexture = new THREE.TextureLoader().load("./night.jpeg");
+scene.background = backgroudTexture;
+
 // Objects
+// Torus
 const geometryTorus = new THREE.TorusGeometry(10, 3, 16, 100);
 const materialTorus = new THREE.MeshStandardMaterial({
   color: 0xff6347,
@@ -26,6 +29,32 @@ const materialTorus = new THREE.MeshStandardMaterial({
 const torus = new THREE.Mesh(geometryTorus, materialTorus);
 
 scene.add(torus);
+
+// Image Box
+
+const uzairTexture = new THREE.TextureLoader().load("./uzair.jpeg");
+
+const uzairMesh = new Mesh(
+  new THREE.BoxGeometry(3, 3, 3),
+  new THREE.MeshBasicMaterial({ map: uzairTexture })
+);
+
+scene.add(uzairMesh);
+
+// Earth Sphere
+
+const earthTexture = new THREE.TextureLoader().load("./earth.jpeg");
+const normalTexture = new THREE.TextureLoader().load("./earthnormal.png");
+
+const earthMesh = new Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshBasicMaterial({ map: earthTexture, normalMap: normalTexture })
+);
+
+earthMesh.position.z = 30;
+earthMesh.position.x = -10;
+
+scene.add(earthMesh);
 
 // Lighting
 const pointLight = new THREE.PointLight(0xffffff);
@@ -68,6 +97,24 @@ function addStar() {
 
 Array(300).fill().forEach(addStar);
 
+// Scroll Function
+
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+  earthMesh.rotation.x += 0.05;
+  earthMesh.rotation.y += 0.075;
+  earthMesh.rotation.z += 0.05;
+
+  uzairMesh.rotation.x += 0.01;
+  uzairMesh.rotation.z += 0.01;
+
+  camera.position.z += t * -0.001;
+  camera.position.x += t * -0.0002;
+  camera.position.y += t * -0.0002;
+}
+
+document.body.onscroll = moveCamera;
+moveCamera();
 // Animate Function
 
 function animate() {
