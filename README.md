@@ -24,7 +24,7 @@ The project learning points are:
 
 ## Live Demo
 
-[Live Demo Link](https://uzairali19.github.io/beginner-protfolio)
+[Live Demo Link](https://beginner-protfolio.vercel.app/)
 
 ## Getting Started
 
